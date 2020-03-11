@@ -1,0 +1,20 @@
+{
+    "databases": [
+        {
+            "name": "Localhost",
+            "host": "127.0.0.1",
+            "port": "3306",
+            "database": "my_database",
+            "user": "root",
+            "password": "12345"
+        },
+        {
+            "name": "Remote",
+            "host": "10.0.0.1",
+            "port": "3306",
+            "database": "other_database",
+            "user": "root",
+            "password": "98765"
+        }
+    ]
+}

@@ -1,0 +1,8 @@
+<?php
+
+$addr = empty($argv[1]) ? 'localhost:8001' : $argv[1];
+
+echo "Starting server on $addr\n";
+exec("php -S $addr router.php");
+
+?>

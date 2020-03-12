@@ -5,7 +5,7 @@
 ```
 git clone https://github.com/douglaszporto/dbsync
 cd dbsync
-cp config.exemple.json config.json
+cp config.example.json config.json
 ```
 
 And edit file `config.json` to fit your MySQL connections

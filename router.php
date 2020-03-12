@@ -11,6 +11,9 @@ if (php_sapi_name() == 'cli-server') {
         case '/diff':
             include_once "diff.php";
             break;
+        case '/exec':
+            include_once "exec.php";
+            break;
         default:
             include_once "index.php";
             break;

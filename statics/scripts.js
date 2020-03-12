@@ -1,22 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     const btnCompare = document.querySelector('#btn-compare');
-    const request = new XMLHttpRequest();
+    const requestDiff = new XMLHttpRequest();
+    const requestExec = new XMLHttpRequest();
 
-    request.onreadystatechange = function() {
-        if(request.readyState === 4) {
-            if(request.status === 200) { 
-                buildDiff(JSON.parse(request.responseText));
+    requestDiff.onreadystatechange = function() {
+        if(requestDiff.readyState === 4) {
+            if(requestDiff.status === 200) { 
+                buildDiff(JSON.parse(requestDiff.responseText));
             } 
         }
     }
-
     
     btnCompare.addEventListener('click', function() {
         const db1 = document.querySelector('#input-database-1').value;
         const db2 = document.querySelector('#input-database-2').value;
-        request.open('Get', '/diff?db1=' + db1 + '&db2=' + db2);
-        request.send();
+        requestDiff.open('Get', '/diff?db1=' + db1 + '&db2=' + db2);
+        requestDiff.send();
     });
 
 
@@ -56,8 +56,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         e.preventDefault();
 
                         elements = document.querySelectorAll('.id-' + diffs[types[type]][i]["id"]);
+                        
                         elements.forEach(element => {
-                            element.parentNode.removeChild(element);
+                            element.style.height = element.childNodes[1].offsetHeight + 'px';
+                            setTimeout(() => {
+                                element.classList.add('removed');
+                            },1);
                         });
                     });
 
@@ -65,10 +69,52 @@ document.addEventListener("DOMContentLoaded", () => {
                         e.stopPropagation();
                         e.preventDefault();
 
-                        elements = document.querySelectorAll('.id-' + diffs[types[type]][i]["id"]);
+                        let sql = diffs[types[type]][i][operations[j]];
+                        let execOn = document.querySelector('#input-database-2').value;
+
+                        if ((diffs[types[type]][i].from == '1' && operations[j] === 'reversesql') || 
+                            (diffs[types[type]][i].from == '2' && operations[j] === 'sql')) {
+                                execOn = document.querySelector('#input-database-1').value;
+                        }
+
+                        requestExec.onreadystatechange = function() {
+                            if(requestExec.readyState === 4) {
+                                if(requestExec.status === 200) { 
+                                    const res = JSON.parse(requestExec.responseText);
+                                    
+                                    const classSql = operations[j] === 'sql' ? '.reversesql' : '.sql';
+                                    const elementRemove = document.querySelector('.id-' + diffs[types[type]][i]["id"] + classSql);
+                                    const elementExec = document.querySelector('.id-' + diffs[types[type]][i]["id"] + '.' +  operations[j]);
+                                    
+                                    elementRemove.style.height = elementRemove.childNodes[1].offsetHeight + 'px';
+                                    setTimeout(() => {
+                                        elementRemove.classList.add('removed');
+                                    },1);
+                                    
+                                    elementExec.classList.add('executed');
+                                    
+                                    let message = document.createElement('pre');
+                                    message.innerHTML = res.message;
+                                    if (res.status === 'fail') {
+                                        message.classList.add('query-error');
+                                    } else if (res.status === 'ok') {
+                                        message.classList.add('query-success');
+                                    }
+                                    elementExec.childNodes[1].appendChild(message);
+
+                                } 
+                            }
+                        }
+
+                        requestExec.open('Post', '/exec?db=' + execOn, true);
+                        requestExec.send(`{
+                            "sql" : "${sql}"
+                        }`);
+
+                        /*elements = document.querySelectorAll('.id-' + diffs[types[type]][i]["id"]);
                         elements.forEach(element => {
                             element.parentNode.removeChild(element);
-                        });
+                        });*/
                     });
 
                     document.querySelector('#database-diff').appendChild(clone);

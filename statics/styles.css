@@ -30,13 +30,7 @@ body:before {
     width: 50%;
     position: absolute;
     z-index: -1;
-    background: repeating-linear-gradient(
-        45deg,
-        #1a1a1a,
-        #1a1a1a 30px,
-        #262626 30px,
-        #262626 60px
-    );
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 #logo {
@@ -137,6 +131,7 @@ select:focus,
 .query-exec-background-even + .query-exec-background-odd {
     border-top: 5px solid rgba(255, 255, 255, 0.05);
     padding-top: 50px;
+    margin-top: 50px;
 }
 
 
@@ -148,24 +143,32 @@ select:focus,
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
+    transition: all .2s ease 0s;
+    overflow: hidden;
+    opacity: 1;
 }
 
-.query-exec-wrapper.from1 {
-    justify-content: flex-start;
+.query-exec-wrapper.removed {
+    height: 0 !important;
 }
-.query-exec-wrapper.from2 {
-    justify-content: flex-end;
-}
+
+
 
 .query-exec-element {
     width: calc(50% - 20px);
-    margin: 0 0 20px 20px;
+    margin: 0;
     padding: 10px;
     box-sizing: border-box;
     border-radius: 5px;
     position: relative;
     z-index: 2;
+    opacity: 1;
+    transition: all .2s ease 0s;
+}
+
+.query-exec-wrapper.removed .query-exec-element{
+    opacity: 0;
 }
 
 .query-exec-wrapper.table.sql .query-exec-element {
@@ -187,12 +190,9 @@ select:focus,
     border: 1px solid #a0982a;
     background-color: #d1da61;
 }
-
-.query-exec-wrapper.from1 .query-exec-element {
-    margin: 0 20px 20px 0;
-}
-.query-exec-wrapper.from2 .query-exec-element {
-    margin: 0 0 20px 20px;
+.query-exec-wrapper.executed .query-exec-element {
+    border: 1px solid #949494 !important;
+    background-color: #a0a0a0 !important;
 }
 
 .query-exec-element:before {
@@ -205,11 +205,6 @@ select:focus,
     right: 0;
     left: 0;
 }
-
-/*.query-exec-wrapper.from1 .query-exec-element:before {
-}
-.query-exec-wrapper.from2 .query-exec-element:before {
-}*/
 
 .query-exec-element-query {
     font-family: monospace;
@@ -225,7 +220,7 @@ select:focus,
 
 .query-exec-element-options {
     position: absolute;
-    top: 50%;
+    bottom: -1px;
     z-index: -1;
     height: 55px;
     width: 150px;
@@ -239,6 +234,7 @@ select:focus,
     cursor: pointer;
     transition: all .2s ease 0s;
     justify-content: flex-start;
+    opacity: 1;
 }
 
 .query-exec-wrapper.table.sql .query-exec-element-options {
@@ -252,6 +248,9 @@ select:focus,
 }
 .query-exec-wrapper.field.reversesql .query-exec-element-options {
     border: 1px solid #a0982a;
+}
+.query-exec-wrapper.executed .query-exec-element-options {
+    opacity: 0;
 }
 
 .query-exec-wrapper.from1 .query-exec-element-options {
@@ -279,6 +278,15 @@ select:focus,
 .query-exec-wrapper.from1 .query-exec-element-options.active:before,
 .query-exec-wrapper.from2 .query-exec-element-options.active:before{
     transform: rotate3d(0,0,1, 180deg);
+}
+
+.query-exec-wrapper.from2.executed .query-exec-element {
+    width: 50%;
+    margin-right: 50%;
+}
+.query-exec-wrapper.from1.executed .query-exec-element {
+    width: 50%;
+    margin-left: 50%;
 }
 
 .query-exec-element-options:before {
@@ -315,4 +323,26 @@ select:focus,
     border-radius: 10px;
     color: #fff;
     margin: 0 5px;
+}
+
+.query-error {
+    background-color: #d4552f;
+    color: #fff;
+    border: 1px solid #a03d20;
+    position: relative;
+    border-radius: 5px;
+    margin-top: 10px;
+    padding: 10px;
+    font-family: monospace;
+}
+
+.query-success {
+    background-color: #06883c;
+    color: #fff;
+    border: 1px solid #025c2b;
+    position: relative;
+    border-radius: 5px;
+    margin-top: 10px;
+    padding: 10px;
+    font-family: monospace;
 }

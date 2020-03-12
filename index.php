@@ -33,7 +33,7 @@ $config = json_decode(file_get_contents('./config.json'), true);
     <div class="database-selector">
         <div class="database database-first">
             <select id="input-database-1">
-                <option value="">Selecione o DB "yours"</option>
+                <option value="">Selecione o DB "mine"</option>
                 <?php foreach($config["databases"] as $i=>$db): ?>
                     <option value="<?php echo $i; ?>"><?php echo $db["name"]?></option>
                 <?php endforeach; ?>

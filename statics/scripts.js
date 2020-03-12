@@ -11,24 +11,50 @@ document.addEventListener("DOMContentLoaded", () => {
             } 
         }
     }
+
+    document.querySelectorAll('#input-database-1, #input-database-2').forEach((item) => {
+        item.addEventListener('change', (e) => {
+            const db1 = document.querySelector('#input-database-1').value;
+            const db2 = document.querySelector('#input-database-2').value;
+
+            if (db1.length > 0 && db2.length > 0 && db1 !== db2) {
+                btnCompare.classList.remove('disabled');
+            } else {
+                btnCompare.classList.add('disabled');
+            }
+        })
+    });
     
     btnCompare.addEventListener('click', function() {
         const db1 = document.querySelector('#input-database-1').value;
         const db2 = document.querySelector('#input-database-2').value;
         requestDiff.open('Get', '/diff?db1=' + db1 + '&db2=' + db2);
         requestDiff.send();
+
+        btnCompare.innerHTML = "";
+        btnCompare.classList.add('loading');
     });
 
 
     const buildDiff = (diffs) => {
+
+        btnCompare.innerHTML = "Comparar";
+        btnCompare.classList.remove('loading');
+
         let template = document.querySelector('#template-query').content;
 
         document.querySelector('#database-diff').innerHTML = "";
 
+        if (diffs["table"].length === 0 && diffs["field"].length === 0) {
+            let message = document.createElement('pre');
+            message.classList.add('query-message');
+            message.innerHTML = "Não há diferenças entre os servidores selecionados";
+            document.querySelector('#database-diff').appendChild(message);
+        }
+
         const types = ["table", "field"];
         let count = 0;
         for(let type in types) {
-            console.log(type);
             for(let i in diffs[types[type]]) {
                 count++;
                 let operations = ['sql','reversesql'];

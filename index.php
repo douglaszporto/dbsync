@@ -49,7 +49,7 @@ $config = json_decode(file_get_contents('./config.json'), true);
         </div>
     </div>
 
-    <button id="btn-compare">Comparar</button>
+    <button id="btn-compare" class="disabled">Comparar</button>
     <div id="database-diff"></div>
 
     <script src="/statics/scripts.js"></script>

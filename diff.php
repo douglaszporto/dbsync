@@ -85,15 +85,22 @@ foreach($tablesInBoth as $t) {
             "sql" => "ALTER TABLE `{$t}` ADD COLUMN `{$field1["Field"]}` {$field1["Type"]}{$acceptNull}{$default};",
                 "reversesql" => "ALTER TABLE {$t} DROP COLUMN {$field1["Field"]}"
             ];
-        } else if (isset($fieldsOnTable2[$f1])) {
-            if ($fieldsOnTable1[$f1]["Type"] != $fieldsOnTable2[$f1]["Type"] || 
-                    $fieldsOnTable1[$f1]["Null"] != $fieldsOnTable2[$f1]["Null"] ||
-                    $fieldsOnTable1[$f1]["Key"] != $fieldsOnTable2[$f1]["Key"] ||
-                    $fieldsOnTable1[$f1]["Default"] != $fieldsOnTable2[$f1]["Default"] ||
-                    $fieldsOnTable1[$f1]["Extra"] != $fieldsOnTable2[$f1]["Extra"]){
+        } else {
+            $index2 = 0;
+            foreach($fieldsOnTable2 as $i=>$f) {
+                if ($f['Field'] == $fieldsOnTable1[$f1]["Field"]) {
+                    $index2 = $i;
+                    break;
+                }
+            }
+            if ($fieldsOnTable1[$f1]["Type"] != $fieldsOnTable2[$index2]["Type"] || 
+                    $fieldsOnTable1[$f1]["Null"] != $fieldsOnTable2[$index2]["Null"] ||
+                    $fieldsOnTable1[$f1]["Key"] != $fieldsOnTable2[$index2]["Key"] ||
+                    $fieldsOnTable1[$f1]["Default"] != $fieldsOnTable2[$index2]["Default"] ||
+                    $fieldsOnTable1[$f1]["Extra"] != $fieldsOnTable2[$index2]["Extra"]){
 
-                $acceptNull2 = $fieldsOnTable2[$f1]["Null"] == 'YES' ? " NULL" : " NOT NULL";
-                $default2 = strlen($fieldsOnTable2[$f1]["Default"]) > 0 ? (" DEFAULT " . $fieldsOnTable2[$f1]["Default"]) : "";
+                $acceptNull2 = $fieldsOnTable2[$index2]["Null"] == 'YES' ? " NULL" : " NOT NULL";
+                $default2 = strlen($fieldsOnTable2[$index2]["Default"]) > 0 ? (" DEFAULT " . $fieldsOnTable2[$index2]["Default"]) : "";
         
                 if (strlen($acceptNull2) == 5 && strlen($default2) == 0) {
                     $acceptNull2 = "";
@@ -128,15 +135,23 @@ foreach($tablesInBoth as $t) {
                 "sql" => "ALTER TABLE `{$t}` ADD COLUMN `{$field2["Field"]}` {$field2["Type"]}{$acceptNull}{$default};",
                 "reversesql" => "ALTER TABLE `{$t}` DROP COLUMN `{$field2["Field"]}`"
             ];
-        } else if (isset($fieldsOnTable1[$f2])) {
-            if ($fieldsOnTable1[$f2]["Type"] != $fieldsOnTable2[$f2]["Type"] || 
-                    $fieldsOnTable1[$f2]["Null"] != $fieldsOnTable2[$f2]["Null"] ||
-                    $fieldsOnTable1[$f2]["Key"] != $fieldsOnTable2[$f2]["Key"] ||
-                    $fieldsOnTable1[$f2]["Default"] != $fieldsOnTable2[$f2]["Default"] ||
-                    $fieldsOnTable1[$f2]["Extra"] != $fieldsOnTable2[$f2]["Extra"]){
+        } else {
+            $index1 = 0;
+            foreach($fieldsOnTable1 as $i=>$f) {
+                if ($f['Field'] == $fieldsOnTable2[$f2]["Field"]) {
+                    $index1 = $i;
+                    break;
+                }
+            }
 
-                $acceptNull2 = $fieldsOnTable1[$f2]["Null"] == 'YES' ? " NULL" : " NOT NULL";
-                $default2 = strlen($fieldsOnTable1[$f2]["Default"]) > 0 ? (" DEFAULT " . $fieldsOnTable1[$f2]["Default"]) : "";
+            if ($fieldsOnTable1[$index1]["Type"] != $fieldsOnTable2[$f2]["Type"] || 
+                    $fieldsOnTable1[$index1]["Null"] != $fieldsOnTable2[$f2]["Null"] ||
+                    $fieldsOnTable1[$index1]["Key"] != $fieldsOnTable2[$f2]["Key"] ||
+                    $fieldsOnTable1[$index1]["Default"] != $fieldsOnTable2[$f2]["Default"] ||
+                    $fieldsOnTable1[$index1]["Extra"] != $fieldsOnTable2[$f2]["Extra"]){
+
+                $acceptNull2 = $fieldsOnTable1[$index1]["Null"] == 'YES' ? " NULL" : " NOT NULL";
+                $default2 = strlen($fieldsOnTable1[$index1]["Default"]) > 0 ? (" DEFAULT " . $fieldsOnTable1[$index1]["Default"]) : "";
         
                 if (strlen($acceptNull2) == 5 && strlen($default2) == 0) {
                     $acceptNull2 = "";

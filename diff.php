@@ -82,7 +82,7 @@ foreach($tablesInBoth as $t) {
                 "id" => rand() * 1000000,
                 "to" => "2",
                 "from" => "1",
-            "sql" => "ALTER TABLE '{$t}' ADD COLUMN `{$field1["Field"]}` {$field1["Type"]}{$acceptNull}{$default};",
+            "sql" => "ALTER TABLE `{$t}` ADD COLUMN `{$field1["Field"]}` {$field1["Type"]}{$acceptNull}{$default};",
                 "reversesql" => "ALTER TABLE {$t} DROP COLUMN {$field1["Field"]}"
             ];
         } else if (isset($fieldsOnTable2[$f1])) {
@@ -104,8 +104,8 @@ foreach($tablesInBoth as $t) {
                     "id" => rand() * 1000000,
                     "to" => "2",
                     "from" => "1",
-                    "sql" => "ALTER TABLE '{$t}' MODIFY COLUMN `{$field1["Field"]}` {$field1["Type"]}{$acceptNull}{$default};",
-                    "reversesql" => "ALTER TABLE '{$t}' MODIFY COLUMN `{$field1["Field"]}` {$fieldsOnTable2[$f1]["Type"]}{$acceptNull2}{$default2};"
+                    "sql" => "ALTER TABLE `{$t}` MODIFY COLUMN `{$field1["Field"]}` {$field1["Type"]}{$acceptNull}{$default};",
+                    "reversesql" => "ALTER TABLE `{$t}` MODIFY COLUMN `{$field1["Field"]}` {$fieldsOnTable2[$f1]["Type"]}{$acceptNull2}{$default2};"
                 ];
             }
         }
@@ -125,8 +125,8 @@ foreach($tablesInBoth as $t) {
                 "id" => rand() * 1000000,
                 "to" => "1",
                 "from" => "2",
-                "sql" => "ALTER TABLE '{$t}' ADD COLUMN `{$field2["Field"]}` {$field2["Type"]}{$acceptNull}{$default};",
-                "reversesql" => "ALTER TABLE '{$t}' DROP COLUMN `{$field2["Field"]}`"
+                "sql" => "ALTER TABLE `{$t}` ADD COLUMN `{$field2["Field"]}` {$field2["Type"]}{$acceptNull}{$default};",
+                "reversesql" => "ALTER TABLE `{$t}` DROP COLUMN `{$field2["Field"]}`"
             ];
         } else if (isset($fieldsOnTable1[$f2])) {
             if ($fieldsOnTable1[$f2]["Type"] != $fieldsOnTable2[$f2]["Type"] || 
@@ -147,8 +147,8 @@ foreach($tablesInBoth as $t) {
                     "id" => rand() * 1000000,
                     "to" => "1",
                     "from" => "2",
-                    "sql" => "ALTER TABLE '{$t}' MODIFY COLUMN `{$field2["Field"]}` {$field2["Type"]}{$acceptNull}{$default};",
-                    "reversesql" => "ALTER TABLE '{$t}' MODIFY COLUMN `{$field2["Field"]}` {$fieldsOnTable1[$f1]["Type"]}{$acceptNull2}{$default2};"
+                    "sql" => "ALTER TABLE `{$t}` MODIFY COLUMN `{$field2["Field"]}` {$field2["Type"]}{$acceptNull}{$default};",
+                    "reversesql" => "ALTER TABLE `{$t}` MODIFY COLUMN `{$field2["Field"]}` {$fieldsOnTable1[$f1]["Type"]}{$acceptNull2}{$default2};"
                 ];
             }
         }
